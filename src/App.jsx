@@ -32,11 +32,7 @@ export default function App() {
   const [user, setUser] = React.useState(localStorage.getItem("user"));
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route
-        errorElement={<Error />}
-        path="/"
-        element={<Layout user={user} setUser={setUser} />}
-      >
+      <Route path="/" element={<Layout user={user} setUser={setUser} />}>
         <Route index exact element={<Home />} />
         <Route path="/home" exact element={<Navigate to="/" />} />
         <Route path="/search/:query" element={<Search />} />
