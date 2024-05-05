@@ -19,7 +19,9 @@ export default function Details() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:8080/tour/${params.id}`);
+      const response = await fetch(
+        `https://travel-rv5s.onrender.com/tour/${params.id}`
+      );
       const result = await response.json();
       setData(result);
       setLoading(false);
@@ -39,16 +41,19 @@ export default function Details() {
       navigate("/activate");
     } else {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:8080/tour/book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user.email,
-          tour: data.id,
-        }),
-      });
+      const response = await fetch(
+        "https://travel-rv5s.onrender.com/tour/book",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            tour: data.id,
+          }),
+        }
+      );
       const res = await response.json();
 
       setIsSubmitting(false);

@@ -9,7 +9,7 @@ function Packages() {
   useEffect(() => {
     setLoading(true);
     async function fetchData() {
-      const res = await fetch("http://localhost:8080/package");
+      const res = await fetch("https://travel-rv5s.onrender.com/package");
       const response = await res.json();
       setLoading(false);
       setPackages(response);

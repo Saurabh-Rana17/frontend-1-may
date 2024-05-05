@@ -25,7 +25,7 @@ export default function PackageDetail() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8080/package/${params.id}`
+        `https://travel-rv5s.onrender.com/package/${params.id}`
       );
       const result = await response.json();
       setData(result);
@@ -50,16 +50,19 @@ export default function PackageDetail() {
       navigate("/activate");
     } else {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:8080/package/book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user.email,
-          package: data.id,
-        }),
-      });
+      const response = await fetch(
+        "https://travel-rv5s.onrender.com/package/book",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            package: data.id,
+          }),
+        }
+      );
       const res = await response.json();
       setIsSubmitting(false);
       navigate("/success");

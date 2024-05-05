@@ -9,7 +9,7 @@ export default function Activate() {
   async function handleClick() {
     if (!user) return;
     setIsGenerating(true);
-    const response = await fetch("http://localhost:8080/generate", {
+    const response = await fetch("https://travel-rv5s.onrender.com/generate", {
       method: "POST",
       body: user.email,
       headers: {

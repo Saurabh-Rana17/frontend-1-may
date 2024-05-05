@@ -25,7 +25,7 @@ export default function Inquiry() {
       navigate("/signup");
     } else {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:8080/inquiry", {
+      const response = await fetch("https://travel-rv5s.onrender.com/inquiry", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -11,7 +11,7 @@ function Explore() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:8080/tour`);
+      const response = await fetch(`https://travel-rv5s.onrender.com/tour`);
       const result = await response.json();
       setPost(result);
       setLoading(false);

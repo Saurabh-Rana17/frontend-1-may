@@ -13,7 +13,7 @@ function MainFeaturedPost() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8080/package/662dc65bd78237f957c68776`
+        `https://travel-rv5s.onrender.com/package/662dc65bd78237f957c68776`
       );
       const result = await response.json();
       setPost(result);

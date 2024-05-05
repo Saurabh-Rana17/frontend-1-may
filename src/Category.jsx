@@ -18,7 +18,7 @@ export default function Category() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8080/category/${category}`
+        `https://travel-rv5s.onrender.com/category/${category}`
       );
       const result = await response.json();
       setData(result);

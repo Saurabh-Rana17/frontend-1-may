@@ -19,15 +19,18 @@ function Hotel() {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:8080/hotel/filter`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          cost: "0,100000000",
-        }),
-      });
+      const response = await fetch(
+        `https://travel-rv5s.onrender.com/hotel/filter`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cost: "0,100000000",
+          }),
+        }
+      );
       const result = await response.json();
       setData(result);
       setLoading(false);
@@ -53,7 +56,7 @@ function Hotel() {
       postData.cost += "," + 10000000;
     }
     setLoading(true);
-    const res = await fetch(`http://localhost:8080/hotel/filter`, {
+    const res = await fetch(`https://travel-rv5s.onrender.com/hotel/filter`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

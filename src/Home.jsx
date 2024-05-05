@@ -88,7 +88,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("http://localhost:8080/category");
+      const res = await fetch("https://travel-rv5s.onrender.com/category");
       const data = await res.json();
       setCategories(data);
     };

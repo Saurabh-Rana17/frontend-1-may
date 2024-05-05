@@ -24,7 +24,9 @@ export default function HotelDetail() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:8080/hotel/${params.id}`);
+      const response = await fetch(
+        `https://travel-rv5s.onrender.com/hotel/${params.id}`
+      );
       const result = await response.json();
       setData(result);
       setLoading(false);
@@ -47,16 +49,19 @@ export default function HotelDetail() {
       navigate("/activate");
     } else {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:8080/hotel/book", {
-        method: "POST",
-        body: JSON.stringify({
-          email: user.email,
-          hotel: datatest.id,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://travel-rv5s.onrender.com/hotel/book",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: user.email,
+            hotel: datatest.id,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const res = await response.json();
       setIsSubmitting(false);
       navigate("/success");

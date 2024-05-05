@@ -47,19 +47,22 @@ export default function SignUp({ setUser }) {
       setPasswordInvalid(true);
     } else {
       setSubmitting(true);
-      const response = await fetch("http://localhost:8080/register", {
-        method: "POST",
-        body: JSON.stringify({
-          name: data.get("fullName"),
-          email: data.get("email"),
-          phone: data.get("phoneNumber"),
-          password: data.get("password"),
-          interest: selectedItems,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://travel-rv5s.onrender.com/register",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name: data.get("fullName"),
+            email: data.get("email"),
+            phone: data.get("phoneNumber"),
+            password: data.get("password"),
+            interest: selectedItems,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (!response.ok) {
         setErrmsg("something went wrong");
         setSubmitting(false);

@@ -20,7 +20,9 @@ export default function Recommended() {
   useEffect(() => {
     setLoading(true);
     async function fetchData(query) {
-      const res = await fetch(`http://localhost:8080/interest${query}`);
+      const res = await fetch(
+        `https://travel-rv5s.onrender.com/interest${query}`
+      );
       const response = await res.json();
       setPost(response);
       setLoading(false);

@@ -25,7 +25,7 @@ export default function ValidateOtp() {
       setIsEmpty(true);
     } else {
       setIsVerifying(true);
-      const response = await fetch("http://localhost:8080/verify", {
+      const response = await fetch("https://travel-rv5s.onrender.com/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

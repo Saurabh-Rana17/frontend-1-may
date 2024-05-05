@@ -19,7 +19,7 @@ export default function Search() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8080/search/${param.query}`
+        `https://travel-rv5s.onrender.com/search/${param.query}`
       );
       const result = await response.json();
       setPost(result);
