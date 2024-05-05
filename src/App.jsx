@@ -1,4 +1,5 @@
 import {
+  HashRouter,
   Navigate,
   Route,
   RouterProvider,
