@@ -20,6 +20,7 @@ export default function SignIn({ setUser }) {
   let navigate = useNavigate();
   const [failed, setfailed] = React.useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     setIsEmpty(false);
@@ -31,6 +32,7 @@ export default function SignIn({ setUser }) {
     if (!email || !password) {
       setIsEmpty(true);
     } else {
+      setSubmitting(true);
       const response = await fetch("http://localhost:8080/login", {
         method: "POST",
         body: JSON.stringify({
@@ -46,9 +48,11 @@ export default function SignIn({ setUser }) {
         const user = await response.json();
         localStorage.setItem("user", JSON.stringify(user));
         setUser(user);
+        setSubmitting(false);
         navigate("/");
       } else {
         setfailed(true);
+        setSubmitting(false);
       }
     }
   };
@@ -110,10 +114,11 @@ export default function SignIn({ setUser }) {
             <Button
               type="submit"
               fullWidth
+              disabled={submitting}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {submitting ? "Signing in" : "Sign in"}
             </Button>
             <Grid container>
               <Grid item>

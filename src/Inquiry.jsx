@@ -38,7 +38,6 @@ export default function Inquiry() {
         }),
       });
       const res = await response.json();
-      console.log(res);
       setIsSubmitting(false);
       navigate("/inquirysuccess");
     }

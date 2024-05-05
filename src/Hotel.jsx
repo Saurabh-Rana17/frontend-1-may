@@ -22,16 +22,13 @@ function Hotel() {
       const response = await fetch(`http://localhost:8080/hotel`);
       const result = await response.json();
       setData(result);
-      console.log("reloaded");
       setLoading(false);
     };
     fetchData();
   }, []);
   async function handleClick() {
     const postData = {};
-    console.log(name.trim() > 0);
     if (name.trim()) {
-      console.log("b");
       postData["search"] = name;
     }
     if (city.trim()) {
@@ -47,7 +44,6 @@ function Hotel() {
     } else {
       postData.cost += "," + 10000000;
     }
-    console.log(postData);
     setLoading(true);
     const res = await fetch(`http://localhost:8080/hotel/filter`, {
       method: "POST",

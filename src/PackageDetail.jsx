@@ -29,7 +29,6 @@ export default function PackageDetail() {
       );
       const result = await response.json();
       setData(result);
-      console.log(result);
       setLoading(false);
       setMainImg(result.images[0]);
       const imgf = result.images;
@@ -62,7 +61,6 @@ export default function PackageDetail() {
         }),
       });
       const res = await response.json();
-      console.log(res);
       setIsSubmitting(false);
       navigate("/success");
     }

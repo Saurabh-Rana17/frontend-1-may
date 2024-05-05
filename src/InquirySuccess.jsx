@@ -23,7 +23,7 @@ function InquirySuccess() {
             Your Query is sent Successfully
           </Typography>
           <Typography gutterBottom variant="body1">
-            Our Agent will contact you shortly
+            Our Agent will contact you within 24 working hours
           </Typography>
           <Box
             sx={{

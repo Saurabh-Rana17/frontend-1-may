@@ -40,17 +40,12 @@ export default function HotelDetail() {
     navigate("/category/" + category);
   };
   const handleBook = async (event) => {
-    console.log({
-      user: user.email,
-      hotel: datatest.id,
-    });
     event.preventDefault();
     if (!user) {
       navigate("/signup");
     } else if (!user.active) {
       navigate("/activate");
     } else {
-      console.log(user.email, datatest.id);
       setIsSubmitting(true);
       const response = await fetch("http://localhost:8080/hotel/book", {
         method: "POST",
@@ -63,7 +58,6 @@ export default function HotelDetail() {
         },
       });
       const res = await response.json();
-      console.log(res);
       setIsSubmitting(false);
       navigate("/success");
     }

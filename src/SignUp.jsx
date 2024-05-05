@@ -24,6 +24,7 @@ export default function SignUp({ setUser }) {
   const [emailInvalid, setEmailInvalid] = useState(false);
   const [passwordInvalid, setPasswordInvalid] = useState(false);
   const [errmsg, setErrmsg] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     setIsEmpty(false);
@@ -45,6 +46,7 @@ export default function SignUp({ setUser }) {
     } else if (password.length < 6) {
       setPasswordInvalid(true);
     } else {
+      setSubmitting(true);
       const response = await fetch("http://localhost:8080/register", {
         method: "POST",
         body: JSON.stringify({
@@ -60,12 +62,15 @@ export default function SignUp({ setUser }) {
       });
       if (!response.ok) {
         setErrmsg("something went wrong");
+        setSubmitting(false);
       } else if (response.headers.get("content-type")) {
         const user = await response.json();
         localStorage.setItem("user", JSON.stringify(user));
         setUser(user);
+        setSubmitting(false);
         navigate("/");
       } else {
+        setSubmitting(false);
         setFailed(true);
       }
     }
@@ -195,10 +200,11 @@ export default function SignUp({ setUser }) {
             <Button
               type="submit"
               fullWidth
+              disabled={submitting}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {submitting ? "Signing Up" : "Sign Up"}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

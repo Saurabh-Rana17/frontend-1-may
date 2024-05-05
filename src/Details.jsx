@@ -50,7 +50,7 @@ export default function Details() {
         }),
       });
       const res = await response.json();
-      console.log(res);
+
       setIsSubmitting(false);
       navigate("/success");
     }
