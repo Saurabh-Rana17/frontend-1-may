@@ -5,14 +5,14 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 
-export default function Layout() {
+export default function Layout({ user, setUser }) {
   const defaultTheme = createTheme();
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Container sx={{ minHeight: "90vh" }} maxWidth="lg">
-        <Header />
+        <Header user={user} setUser={setUser} />
         <Outlet />
       </Container>
       <Footer />

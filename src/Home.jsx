@@ -12,6 +12,9 @@ import Main from "./Main.jsx";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+import ExplorePost from "./CategoryPost.jsx";
+import RecommendedPost from "./Recommended.jsx";
 
 const mainFeaturedPost = {
   title: "Devbhoomi Uttarakhand",
@@ -68,7 +71,7 @@ const featuredPosts = [
 const sidebar = {
   title: "About",
   description:
-    "Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.",
+    "At [Your Company Name], we unlock the wonders of Uttarakhand for you with expert guides and carefully curated itineraries. Join us to experience the magic firsthand.",
   social: [
     { name: "GitHub", icon: GitHubIcon },
     { name: "X", icon: XIcon },
@@ -81,22 +84,31 @@ const defaultTheme = createTheme();
 export default function Home() {
   const user = localStorage.getItem("user");
   let i = 0;
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("http://localhost:8080/category");
+      const data = await res.json();
+      setCategories(data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <main>
       <MainFeaturedPost post={mainFeaturedPost} />
       <Typography component="h2" variant="h5">
-        {user
-          ? "Based on Your Interest Explore"
-          : "Explore the Natural Beauty of Uttarakhand"}
+        "Explore the Natural Beauty of Uttarakhand "
       </Typography>
 
       <Grid sx={{ mt: 0 }} container spacing={4}>
-        {featuredPosts.map((post) => (
-          <FeaturedPost key={i++} post={post} />
+        {categories.map((post) => (
+          <ExplorePost key={i++} post={post} />
         ))}
-        {/*<SeeMore key="SeeingAllPost"/>*/}
       </Grid>
 
+      <RecommendedPost />
       <Grid container spacing={5} sx={{ mt: 3 }}>
         <Main title="From the firehose" />
         <Sidebar

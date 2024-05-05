@@ -13,7 +13,7 @@ function MainFeaturedPost() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8080/tour/6628ff37cf6d6408265228e1`
+        `http://localhost:8080/package/662dc65bd78237f957c68776`
       );
       const result = await response.json();
       setPost(result);
@@ -24,7 +24,10 @@ function MainFeaturedPost() {
   return (
     <>
       {loading ? (
-        <> </>
+        <>
+          {" "}
+          <Loader />{" "}
+        </>
       ) : (
         <Paper
           sx={{
@@ -79,7 +82,7 @@ function MainFeaturedPost() {
                     },
                   }}
                 >
-                  {post.title}
+                  {post.name}
                 </Typography>
                 <Typography
                   sx={{
@@ -95,7 +98,7 @@ function MainFeaturedPost() {
                   color="inherit"
                   paragraph
                 >
-                  {post.description.substring(0, 199)}
+                  {post.description.substring(0, 199)}...
                 </Typography>
                 <Typography
                   sx={{
@@ -111,9 +114,13 @@ function MainFeaturedPost() {
                   color="inherit"
                   paragraph
                 >
-                  {post.description.substring(0, 99)}
+                  {post.description.substring(0, 99)}...
                 </Typography>
-                <Link variant="subtitle1" href={`/tour/${post.id}`}>
+                <Link
+                  sx={{ color: "white" }}
+                  variant="subtitle1"
+                  href={`/package/${post.id}`}
+                >
                   Continue reading…
                 </Link>
               </Box>

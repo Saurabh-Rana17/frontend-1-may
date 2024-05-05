@@ -8,97 +8,123 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
-import {useNavigate} from "react-router-dom";
-import React from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
-    let navigate = useNavigate();
-    const [failed, setfailed] =     React.useState(false);
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const response = await fetch("http://localhost:8080/login", {
-            method: "POST",
-            body: JSON.stringify({
-                email: data.get("email"), password: data.get("password"),
-            }),
-            headers:  {
-                'Content-Type': 'application/json'
-            }
-        })
+export default function SignIn({ setUser }) {
+  let navigate = useNavigate();
+  const [failed, setfailed] = React.useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
 
-        if (response.headers.get('content-type')) {
-            const user = await response.json();
-            localStorage.setItem("user", JSON.stringify(user));
-            navigate("/");
-        } else {
-            setfailed(true);
-        }
-    };
+  const handleSubmit = async (event) => {
+    setIsEmpty(false);
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const email = data.get("email");
+    const password = data.get("password");
 
-    return (<ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
-            <CssBaseline/>
-            <Box
-                sx={{
-                    marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center",
-                }}
+    if (!email || !password) {
+      setIsEmpty(true);
+    } else {
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.headers.get("content-type")) {
+        const user = await response.json();
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
+        navigate("/");
+      } else {
+        setfailed(true);
+      }
+    }
+  };
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            {failed && (
+              <Typography align={"center"} sx={{ color: "red" }}>
+                Incorrect username or password
+              </Typography>
+            )}
+            {isEmpty && (
+              <Typography align={"center"} sx={{ color: "red" }}>
+                Please Enter some value
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
             >
-                <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
-                    <LockOutlinedIcon/>
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign in
-                </Typography>
-                <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{mt: 1}}
-                >
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
-                    {failed && <Typography align={'center'} sx={{color: "red"}}>Incorrect username or password</Typography>}
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{mt: 3, mb: 2}}
-                    >
-                        Sign In
-                    </Button>
-                    <Grid container>
-                        <Grid item>
-                            <Link href="/signUp" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </Box>
-            </Box>
-        </Container>
-    </ThemeProvider>);
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item>
+                <Link href="/signUp" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
+  );
 }

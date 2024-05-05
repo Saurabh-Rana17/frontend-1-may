@@ -1,137 +1,142 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { styled } from "@mui/system";
-
-const FormGrid = styled(Grid)(() => ({
-  display: "flex",
-  flexDirection: "column",
-}));
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import FeaturedPost from "./FeaturedPost";
+import HotelPost from "./HotelPost";
+import Loader from "./Loader";
 
 function Hotel() {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [min, setMin] = useState("");
+  const [max, setMax] = useState("");
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      const response = await fetch(`http://localhost:8080/hotel`);
+      const result = await response.json();
+      setData(result);
+      console.log("reloaded");
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+  async function handleClick() {
+    const postData = {};
+    console.log(name.trim() > 0);
+    if (name.trim()) {
+      console.log("b");
+      postData["search"] = name;
+    }
+    if (city.trim()) {
+      postData.city = city;
+    }
+    if (min) {
+      postData.cost = min;
+    } else {
+      postData.cost = 0;
+    }
+    if (max) {
+      postData.cost += "," + max;
+    } else {
+      postData.cost += "," + 10000000;
+    }
+    console.log(postData);
+    setLoading(true);
+    const res = await fetch(`http://localhost:8080/hotel/filter`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+    const response = await res.json();
+    setLoading(false);
+    setData(response);
+  }
   return (
     <>
-      <Grid
-        marginX={"auto"}
-        sx={{
-          width: {
-            xs: "90vw",
-            sm: "70vw",
-          },
-          marginY: {
-            xs: "1rem",
-            sm: "1rem",
-          },
-        }}
-        container
-        rowSpacing={3}
-        columnSpacing={2}
+      <Box sx={{ margin: "1rem", textAlign: "center" }}>
+        <Paper
+          elevation={5}
+          sx={{
+            padding: {
+              xs: "2rem",
+              sm: "2rem",
+            },
+          }}
+        >
+          <Box marginRight={"1rem"} sx={{ display: "inline" }}>
+            <TextField
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              label="Name"
+              variant="standard"
+            />
+          </Box>
+          <Box marginRight={"1rem"} sx={{ display: "inline" }}>
+            <TextField
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              label="City"
+              variant="standard"
+            />
+          </Box>
+          <Box marginRight={"1rem"} sx={{ display: "inline" }}>
+            <TextField
+              value={min}
+              onChange={(e) => setMin(e.target.value)}
+              type="number"
+              label="Min Cost"
+              variant="standard"
+            />
+          </Box>
+          <Box marginRight={"1rem"} sx={{ display: "inline" }}>
+            <TextField
+              value={max}
+              onChange={(e) => setMax(e.target.value)}
+              type="number"
+              label="Max Cost"
+              variant="standard"
+            />
+          </Box>
+
+          <Button
+            onClick={handleClick}
+            sx={{
+              marginTop: {
+                xs: "1rem",
+                sm: "0.5rem",
+              },
+            }}
+            variant="contained"
+          >
+            Search Hotel
+          </Button>
+        </Paper>
+      </Box>
+
+      <Typography
+        sx={{ textAlign: "center", paddingY: "2rem" }}
+        component={"h1"}
+        variant="h4"
       >
-        <FormGrid item xs={12} md={6}>
-          <FormLabel htmlFor="first-name" required>
-            First name
-          </FormLabel>
-          <OutlinedInput
-            id="first-name"
-            name="first-name"
-            type="name"
-            placeholder="John"
-            autoComplete="first name"
-            required
-          />
-        </FormGrid>
-        <FormGrid item xs={12} md={6}>
-          <FormLabel htmlFor="last-name" required>
-            Last name
-          </FormLabel>
-          <OutlinedInput
-            id="last-name"
-            name="last-name"
-            type="last-name"
-            placeholder="Snow"
-            autoComplete="last name"
-            required
-          />
-        </FormGrid>
-        <FormGrid item xs={12}>
-          <FormLabel htmlFor="address1" required>
-            Address line 1
-          </FormLabel>
-          <OutlinedInput
-            id="address1"
-            name="address1"
-            type="address1"
-            placeholder="Street name and number"
-            autoComplete="shipping address-line1"
-            required
-          />
-        </FormGrid>
-        <FormGrid item xs={12}>
-          <FormLabel htmlFor="address2">Address line 2</FormLabel>
-          <OutlinedInput
-            id="address2"
-            name="address2"
-            type="address2"
-            placeholder="Apartment, suite, unit, etc. (optional)"
-            autoComplete="shipping address-line2"
-            required
-          />
-        </FormGrid>
-        <FormGrid item xs={6}>
-          <FormLabel htmlFor="city" required>
-            City
-          </FormLabel>
-          <OutlinedInput
-            id="city"
-            name="city"
-            type="city"
-            placeholder="New York"
-            autoComplete="City"
-            required
-          />
-        </FormGrid>
-        <FormGrid item xs={6}>
-          <FormLabel htmlFor="state" required>
-            State
-          </FormLabel>
-          <OutlinedInput
-            id="state"
-            name="state"
-            type="state"
-            placeholder="NY"
-            autoComplete="State"
-            required
-          />
-        </FormGrid>
-        <FormGrid item xs={6}>
-          <FormLabel htmlFor="zip" required>
-            Zip / Postal code
-          </FormLabel>
-          <OutlinedInput
-            id="zip"
-            name="zip"
-            type="zip"
-            placeholder="12345"
-            autoComplete="shipping postal-code"
-            required
-          />
-        </FormGrid>
-        <FormGrid item xs={6}>
-          <FormLabel htmlFor="country" required>
-            Country
-          </FormLabel>
-          <OutlinedInput
-            id="country"
-            name="country"
-            type="country"
-            placeholder="United States"
-            autoComplete="shipping country"
-            required
-          />
-        </FormGrid>
-      </Grid>
+        Explore All Hotel
+      </Typography>
+      {!loading && (
+        <Grid container spacing={4}>
+          {data.map((post) => (
+            <HotelPost key={post.id} post={post} />
+          ))}
+        </Grid>
+      )}
+      {loading && <Loader />}
     </>
   );
 }

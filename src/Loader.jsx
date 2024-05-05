@@ -7,6 +7,7 @@ function Loader() {
     margin: "0 auto",
     borderColor: "red",
     marginTop: "8rem",
+    marginBottom: "2rem",
   };
   return (
     <>

@@ -7,16 +7,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { useNavigate } from "react-router-dom";
 
-function FeaturedPost({ post }) {
+function HotelPost({ post }) {
   let navigate = useNavigate();
   let imgUrl;
   let navUrl;
   if (post.images) {
     imgUrl = post.images[0];
-    navUrl = `/package/${post.id}`;
-  } else {
-    imgUrl = post.image;
-    navUrl = `/tour/${post.id}`;
+    navUrl = `/hotel/${post.id}`;
   }
   function exploreHandler() {
     if (post.images) navigate(navUrl);
@@ -25,13 +22,16 @@ function FeaturedPost({ post }) {
   return (
     <Grid item xs={12} md={6}>
       <CardActionArea component="a" href={navUrl}>
-        <Card sx={{ display: { xs: "none", sm: "flex" } }}>
+        <Card sx={{ display: { xs: "none", sm: "flex" }, height: "10rem" }}>
           <CardContent sx={{ flex: 1 }}>
             <Typography component="h2" variant="h5">
               {post.name ? post.name : post.title}
             </Typography>
-            <Typography variant="subtitle1" paragraph>
-              {post.description.substring(0, 80)}...
+            <Typography sx={{ height: "2.4rem" }} variant="subtitle1" paragraph>
+              📍{post.location.substring(0, 70)}...
+            </Typography>
+            <Typography variant="subtitle1" component={"b"}>
+              💵<b>₹{post.cost}</b>
             </Typography>
             <Typography
               variant="subtitle1"
@@ -72,7 +72,10 @@ function FeaturedPost({ post }) {
               {post.name ? post.name : post.title}
             </Typography>
             <Typography variant="subtitle1" paragraph>
-              {post.description.substring(0, 197)} ...
+              📍{post.location.substring(0, 197)}
+            </Typography>
+            <Typography variant="subtitle1" component={"b"}>
+              💵<b>₹{post.cost}</b>
             </Typography>
             <Typography
               variant="subtitle1"
@@ -88,4 +91,4 @@ function FeaturedPost({ post }) {
   );
 }
 
-export default FeaturedPost;
+export default HotelPost;

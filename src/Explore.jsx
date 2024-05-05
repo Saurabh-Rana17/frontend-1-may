@@ -28,7 +28,7 @@ function Explore() {
         component={"h1"}
         variant="h4"
       >
-        Explore All Tour Packages
+        Explore All Tour
       </Typography>
       {!loading && (
         <Grid container spacing={4}>

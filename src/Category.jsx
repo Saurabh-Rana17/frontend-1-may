@@ -31,7 +31,17 @@ export default function Category() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Divider />
-      <Typography component="h2" variant="h5" align="center">
+      <Typography
+        sx={{
+          marginY: {
+            xs: "1rem",
+            sm: "2rem",
+          },
+        }}
+        component="h2"
+        variant="h5"
+        align="center"
+      >
         Here are some of the Tours under {category.toLocaleUpperCase()} category
       </Typography>
       {!loading && (

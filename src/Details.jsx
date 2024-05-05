@@ -14,6 +14,9 @@ export default function Details() {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(`http://localhost:8080/tour/${params.id}`);
@@ -27,17 +30,42 @@ export default function Details() {
   const handleClick = (category) => {
     navigate("/category/" + category);
   };
+
+  const handleBook = async (event) => {
+    event.preventDefault();
+    if (!user) {
+      navigate("/signup");
+    } else if (!user.active) {
+      navigate("/activate");
+    } else {
+      setIsSubmitting(true);
+      const response = await fetch("http://localhost:8080/tour/book", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user.email,
+          tour: data.id,
+        }),
+      });
+      const res = await response.json();
+      console.log(res);
+      setIsSubmitting(false);
+      navigate("/success");
+    }
+  };
+
   return (
     <>
       {loading ? (
         <>
-          {" "}
-          <Loader />{" "}
+          <Loader />
         </>
       ) : (
         <Box>
           <Paper sx={{ border: "1px solid grey.500", p: 3 }}>
-            <Typography component="h1" variant="h4" align="center">
+            <Typography gutterBottom component="h1" variant="h4" align="center">
               {data.title}
             </Typography>
             <CardMedia
@@ -54,9 +82,10 @@ export default function Details() {
             <CardMedia
               component="img"
               sx={{
-                width: "85vw",
-                height: "50vh",
+                // width: "80vw",
+                height: "30vh",
                 mx: "auto",
+                objectFit: "cover",
                 display: { xs: "flex", sm: "none" },
               }}
               image={data.image}
@@ -72,22 +101,27 @@ export default function Details() {
               </Typography>
             </pre>
 
-            <Stack direction="row" spacing={1}>
-              {data.category.map((item) => (
-                <Chip
-                  key={item}
-                  label={item.toUpperCase()}
-                  onClick={() => handleClick(item)}
-                />
-              ))}
-            </Stack>
+            {/* <Stack direction={{ xs: "column", sm: "row" }} spacing={1}> */}
+            {data.category.map((item) => (
+              <Chip
+                key={item}
+                label={item.toUpperCase()}
+                sx={{
+                  marginRight: "1rem",
+                  marginTop: "1rem",
+                }}
+                onClick={() => handleClick(item)}
+              />
+            ))}
+            {/* </Stack> */}
             <Box py={"2rem"} textAlign={"center"}>
               <Button
-                onClick={() => navigate(`/book/${params.id}`)}
+                disabled={isSubmitting}
+                onClick={handleBook}
                 variant="contained"
                 sx={{}}
               >
-                Book Now
+                {isSubmitting ? "Booking Now" : "Book Now"}
               </Button>
             </Box>
           </Paper>

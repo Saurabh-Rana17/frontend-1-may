@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { useNavigate } from "react-router-dom";
 
-function FeaturedPost({ post }) {
+function RecommendedPost({ post }) {
   let navigate = useNavigate();
   let imgUrl;
   let navUrl;
@@ -23,42 +23,13 @@ function FeaturedPost({ post }) {
   }
 
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} sm={4}>
       <CardActionArea component="a" href={navUrl}>
-        <Card sx={{ display: { xs: "none", sm: "flex" } }}>
-          <CardContent sx={{ flex: 1 }}>
-            <Typography component="h2" variant="h5">
-              {post.name ? post.name : post.title}
-            </Typography>
-            <Typography variant="subtitle1" paragraph>
-              {post.description.substring(0, 80)}...
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              color="primary"
-              onClick={exploreHandler}
-            >
-              Explore
-            </Typography>
-          </CardContent>
-          <CardMedia
-            component="img"
-            sx={{
-              width: 160,
-              maxHeight: 170,
-              objectFit: "cover",
-              display: { xs: "none", sm: "flex" },
-            }}
-            image={imgUrl}
-            alt={post.imageLabel}
-          />
-        </Card>
-
         <Card
           sx={{
             maxWidth: 360,
             marginX: "auto",
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", sm: "block" },
           }}
         >
           <CardMedia
@@ -72,7 +43,7 @@ function FeaturedPost({ post }) {
               {post.name ? post.name : post.title}
             </Typography>
             <Typography variant="subtitle1" paragraph>
-              {post.description.substring(0, 197)} ...
+              {post.description.substring(0, 185)} ...
             </Typography>
             <Typography
               variant="subtitle1"
@@ -88,4 +59,4 @@ function FeaturedPost({ post }) {
   );
 }
 
-export default FeaturedPost;
+export default RecommendedPost;

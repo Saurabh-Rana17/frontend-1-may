@@ -1,137 +1,123 @@
-import * as React from "react";
-
-import FormLabel from "@mui/material/FormLabel";
-import Grid from "@mui/material/Grid";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { styled } from "@mui/system";
-
-const FormGrid = styled(Grid)(() => ({
-  display: "flex",
-  flexDirection: "column",
-}));
+import {
+  Box,
+  Button,
+  OutlinedInput,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Inquiry() {
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [query, setQuery] = useState("");
+  const [queryDetail, setQueryDetail] = useState("");
+  const [empty, setEmpty] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleClick() {
+    setEmpty(false);
+    if (!query || !queryDetail) {
+      setEmpty(true);
+    }
+    if (!user) {
+      navigate("/signup");
+    } else {
+      setIsSubmitting(true);
+      const response = await fetch("http://localhost:8080/inquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user.email,
+          summary: query,
+          description: queryDetail,
+        }),
+      });
+      const res = await response.json();
+      console.log(res);
+      setIsSubmitting(false);
+      navigate("/inquirysuccess");
+    }
+  }
+
   return (
-    // <Paper sx={{ marginY: "3rem" }}>
-    <Grid
-      marginX={"auto"}
-      sx={{
-        width: {
-          xs: "90vw",
-          sm: "70vw",
-        },
-        marginY: {
-          xs: "1rem",
-          sm: "1rem",
-        },
-      }}
-      container
-      rowSpacing={3}
-      columnSpacing={2}
-    >
-      <FormGrid item xs={12} md={6}>
-        <FormLabel htmlFor="first-name" required>
-          First name
-        </FormLabel>
-        <OutlinedInput
-          id="first-name"
-          name="first-name"
-          type="name"
-          placeholder="John"
-          autoComplete="first name"
-          required
-        />
-      </FormGrid>
-      <FormGrid item xs={12} md={6}>
-        <FormLabel htmlFor="last-name" required>
-          Last name
-        </FormLabel>
-        <OutlinedInput
-          id="last-name"
-          name="last-name"
-          type="last-name"
-          placeholder="Snow"
-          autoComplete="last name"
-          required
-        />
-      </FormGrid>
-      <FormGrid item xs={12}>
-        <FormLabel htmlFor="address1" required>
-          Address line 1
-        </FormLabel>
-        <OutlinedInput
-          id="address1"
-          name="address1"
-          type="address1"
-          placeholder="Street name and number"
-          autoComplete="shipping address-line1"
-          required
-        />
-      </FormGrid>
-      <FormGrid item xs={12}>
-        <FormLabel htmlFor="address2">Address line 2</FormLabel>
-        <OutlinedInput
-          id="address2"
-          name="address2"
-          type="address2"
-          placeholder="Apartment, suite, unit, etc. (optional)"
-          autoComplete="shipping address-line2"
-          required
-        />
-      </FormGrid>
-      <FormGrid item xs={6}>
-        <FormLabel htmlFor="city" required>
-          City
-        </FormLabel>
-        <OutlinedInput
-          id="city"
-          name="city"
-          type="city"
-          placeholder="New York"
-          autoComplete="City"
-          required
-        />
-      </FormGrid>
-      <FormGrid item xs={6}>
-        <FormLabel htmlFor="state" required>
-          State
-        </FormLabel>
-        <OutlinedInput
-          id="state"
-          name="state"
-          type="state"
-          placeholder="NY"
-          autoComplete="State"
-          required
-        />
-      </FormGrid>
-      <FormGrid item xs={6}>
-        <FormLabel htmlFor="zip" required>
-          Zip / Postal code
-        </FormLabel>
-        <OutlinedInput
-          id="zip"
-          name="zip"
-          type="zip"
-          placeholder="12345"
-          autoComplete="shipping postal-code"
-          required
-        />
-      </FormGrid>
-      <FormGrid item xs={6}>
-        <FormLabel htmlFor="country" required>
-          Country
-        </FormLabel>
-        <OutlinedInput
-          id="country"
-          name="country"
-          type="country"
-          placeholder="United States"
-          autoComplete="shipping country"
-          required
-        />
-      </FormGrid>
-    </Grid>
-    // </Paper>
+    <>
+      <div style={{ margin: "auto" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginY: "5rem",
+            flexDirection: "row",
+          }}
+        >
+          <Paper
+            sx={{
+              padding: {
+                xs: "1rem",
+                sm: "2rem",
+              },
+            }}
+            elevation={3}
+          >
+            <Typography
+              sx={{
+                marginBottom: {
+                  xs: "1rem",
+                  sm: "2rem",
+                },
+              }}
+              gutterBottom
+              variant="h5"
+            >
+              Have any doubts or questions ? Contact us
+            </Typography>
+            <TextField
+              sx={{ marginBottom: "1.5rem" }}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              fullWidth
+              required
+              label="Enter Question"
+            />
+            <TextField
+              value={queryDetail}
+              onChange={(e) => setQueryDetail(e.target.value)}
+              fullWidth
+              required
+              multiline
+              rows={4}
+              label="Describe your Question"
+            />
+            {empty && (
+              <Typography paddingTop={1} align={"center"} sx={{ color: "red" }}>
+                Please enter a value
+              </Typography>
+            )}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "2rem",
+              }}
+            >
+              <Button
+                disabled={isSubmitting}
+                sx={{ width: "6rem" }}
+                onClick={handleClick}
+                variant="contained"
+              >
+                {isSubmitting ? "Sending" : "Send"}
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
+      </div>
+    </>
   );
 }

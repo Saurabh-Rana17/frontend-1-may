@@ -7,31 +7,26 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { useNavigate } from "react-router-dom";
 
-function FeaturedPost({ post }) {
+function CategoryPost({ post }) {
   let navigate = useNavigate();
-  let imgUrl;
-  let navUrl;
-  if (post.images) {
-    imgUrl = post.images[0];
-    navUrl = `/package/${post.id}`;
-  } else {
-    imgUrl = post.image;
-    navUrl = `/tour/${post.id}`;
-  }
-  function exploreHandler() {
-    if (post.images) navigate(navUrl);
+  function exploreHandler(category) {
+    navigate("/category/" + post.name);
   }
 
   return (
     <Grid item xs={12} md={6}>
-      <CardActionArea component="a" href={navUrl}>
+      <CardActionArea href={"/category/" + post.name}>
         <Card sx={{ display: { xs: "none", sm: "flex" } }}>
           <CardContent sx={{ flex: 1 }}>
-            <Typography component="h2" variant="h5">
-              {post.name ? post.name : post.title}
+            <Typography
+              sx={{ textTransform: "capitalize" }}
+              component="h2"
+              variant="h5"
+            >
+              {post.name}
             </Typography>
             <Typography variant="subtitle1" paragraph>
-              {post.description.substring(0, 80)}...
+              {post.summary.substring(0, 80)}...
             </Typography>
             <Typography
               variant="subtitle1"
@@ -49,7 +44,7 @@ function FeaturedPost({ post }) {
               objectFit: "cover",
               display: { xs: "none", sm: "flex" },
             }}
-            image={imgUrl}
+            image={post.image}
             alt={post.imageLabel}
           />
         </Card>
@@ -64,15 +59,19 @@ function FeaturedPost({ post }) {
           <CardMedia
             component="img"
             height="250"
-            image={imgUrl}
+            image={post.image}
             alt={post.imageLabel}
           />
           <CardContent>
-            <Typography variant="h5" component="h2">
-              {post.name ? post.name : post.title}
+            <Typography
+              sx={{ textTransform: "capitalize" }}
+              variant="h5"
+              component="h2"
+            >
+              {post.name}
             </Typography>
             <Typography variant="subtitle1" paragraph>
-              {post.description.substring(0, 197)} ...
+              {post.summary.substring(0, 197)} ...
             </Typography>
             <Typography
               variant="subtitle1"
@@ -88,4 +87,4 @@ function FeaturedPost({ post }) {
   );
 }
 
-export default FeaturedPost;
+export default CategoryPost;
