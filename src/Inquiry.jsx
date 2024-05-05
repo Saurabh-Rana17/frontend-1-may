@@ -21,8 +21,7 @@ export default function Inquiry() {
     setEmpty(false);
     if (!query || !queryDetail) {
       setEmpty(true);
-    }
-    if (!user) {
+    } else if (!user) {
       navigate("/signup");
     } else {
       setIsSubmitting(true);
