@@ -1,8 +1,9 @@
 {
-  "routes":[
+  "buildCommand": "vite build",
+  "rewrites": [
     {
-      "src":"/[^.]+",
-      "dest":"/"
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
