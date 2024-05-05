@@ -30,8 +30,8 @@ import InquirySuccess from "./InquirySuccess.jsx";
 
 export default function App() {
   const [user, setUser] = React.useState(localStorage.getItem("user"));
-  const router = createBrowserRouter(
-    createRoutesFromElements(
+  return (
+    <>
       <Route path="/" element={<Layout user={user} setUser={setUser} />}>
         <Route index exact element={<Home />} />
         <Route path="/home" exact element={<Navigate to="/" />} />
@@ -53,11 +53,6 @@ export default function App() {
         <Route path="/success" element={<BookingSuccess />} />
         <Route path="/inquirysuccess" element={<InquirySuccess />} />
       </Route>
-    )
-  );
-  return (
-    <>
-      <RouterProvider router={router} />
     </>
   );
 }
