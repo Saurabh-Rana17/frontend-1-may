@@ -122,8 +122,24 @@ export default function HotelDetail() {
               💵 <b>Price</b> :- ₹{datatest.cost}
             </Typography>
             <Typography
-              sx={{ p: { xs: 0, sm: 2 }, textAlign: "center" }}
+              sx={{
+                p: { xs: 0, sm: 2 },
+                display: { xs: "none", sm: "block" },
+                textAlign: "center",
+              }}
               variant="h4"
+              paragraph
+            >
+              Images From Hotel
+            </Typography>
+
+            <Typography
+              sx={{
+                p: { xs: 0, sm: 2 },
+                display: { xs: "block", sm: "none" },
+                textAlign: "center",
+              }}
+              variant="h5"
               paragraph
             >
               Images From Hotel
@@ -191,7 +207,7 @@ export default function HotelDetail() {
             </Box>
 
             <Typography
-              sx={{ paddingY: { xs: 0, sm: 2 }, textAlign: "center" }}
+              sx={{ paddingY: { xs: 2, sm: 2 }, textAlign: "center" }}
               variant="h4"
               paragraph
             >

@@ -19,7 +19,15 @@ function Hotel() {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:8080/hotel`);
+      const response = await fetch(`http://localhost:8080/hotel/filter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cost: "0,100000000",
+        }),
+      });
       const result = await response.json();
       setData(result);
       setLoading(false);
@@ -63,12 +71,16 @@ function Hotel() {
           elevation={5}
           sx={{
             padding: {
-              xs: "2rem",
+              xs: "1rem",
               sm: "2rem",
             },
           }}
         >
-          <Box marginRight={"1rem"} sx={{ display: "inline" }}>
+          <Box
+            marginBottom={{ xs: "0.5rem", sm: "none" }}
+            marginRight={"1rem"}
+            sx={{ display: "inline-block" }}
+          >
             <TextField
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -76,7 +88,11 @@ function Hotel() {
               variant="standard"
             />
           </Box>
-          <Box marginRight={"1rem"} sx={{ display: "inline" }}>
+          <Box
+            marginBottom={{ xs: "0.5rem", sm: "none" }}
+            marginRight={"1rem"}
+            sx={{ display: "inline-block" }}
+          >
             <TextField
               value={city}
               onChange={(e) => setCity(e.target.value)}
@@ -84,7 +100,11 @@ function Hotel() {
               variant="standard"
             />
           </Box>
-          <Box marginRight={"1rem"} sx={{ display: "inline" }}>
+          <Box
+            marginBottom={{ xs: "0.5rem", sm: "none" }}
+            marginRight={"1rem"}
+            sx={{ display: "inline-block" }}
+          >
             <TextField
               value={min}
               onChange={(e) => setMin(e.target.value)}
@@ -93,7 +113,11 @@ function Hotel() {
               variant="standard"
             />
           </Box>
-          <Box marginRight={"1rem"} sx={{ display: "inline" }}>
+          <Box
+            marginBottom={{ xs: "0.5rem", sm: "none" }}
+            marginRight={"1rem"}
+            sx={{ display: "inline-block" }}
+          >
             <TextField
               value={max}
               onChange={(e) => setMax(e.target.value)}

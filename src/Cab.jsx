@@ -1,17 +1,151 @@
-import * as React from "react";
-
-import FormLabel from "@mui/material/FormLabel";
-import Grid from "@mui/material/Grid";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { styled } from "@mui/system";
-
-const FormGrid = styled(Grid)(() => ({
-  display: "flex",
-  flexDirection: "column",
-}));
+import {
+  Box,
+  Button,
+  Grid,
+  OutlinedInput,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Cab() {
-  const str = `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3443.4425311881114!2d78.0178559793457!3d30.338370799999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390929ff4740401f%3A0x39e76b0cbd98d314!2sHotel%20Alaknanda!5e0!3m2!1sen!2sin!4v1714828668299!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
-  const val = str.slice(str.indexOf(`"`) + 1, str.indexOf(`"`, 20));
-  return <iframe src={val} width={600} height={450} style={{ border: 0 }} />;
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [pickUp, setPickUp] = useState("");
+  const [dropUp, setDropUp] = useState("");
+  const [noOfPeople, setNoOfPeople] = useState("");
+  const [date, setDate] = useState("");
+  const [empty, setEmpty] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleClick() {
+    setEmpty(false);
+    if (!pickUp || !dropUp || !noOfPeople || !date) {
+      setEmpty(true);
+    } else if (!user) {
+      navigate("/signup");
+    } else {
+      setIsSubmitting(true);
+      const response = await fetch("https://travel-rv5s.onrender.com/cab", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user.email,
+          pickUp: pickUp,
+          dropUp: dropUp,
+          date: date,
+          noOfPeople: noOfPeople,
+        }),
+      });
+      const res = await response.json();
+      console.log(res);
+      setIsSubmitting(false);
+      navigate("/inquirysuccess");
+    }
+  }
+  console.log(pickUp);
+  return (
+    <>
+      <div style={{ margin: "auto" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "auto",
+            marginY: "3rem",
+            flexDirection: "row",
+            // width: "38rem",
+            textAlign: "center",
+          }}
+        >
+          <Paper
+            sx={{
+              padding: {
+                xs: "1rem",
+                sm: "2rem",
+              },
+            }}
+            elevation={3}
+          >
+            <Typography
+              sx={{
+                marginBottom: {
+                  xs: "1rem",
+                  sm: "2rem",
+                },
+              }}
+              gutterBottom
+              variant="h5"
+            >
+              Entere Your Cab Requirements
+            </Typography>
+
+            <TextField
+              sx={{ marginBottom: "1.5rem" }}
+              fullWidth
+              required
+              label="Pick Up Point"
+              onChange={(e) => setPickUp(e.target.value)}
+            />
+
+            <TextField
+              sx={{ marginBottom: "1.5rem" }}
+              fullWidth
+              required
+              label="Drop Location"
+              onChange={(e) => setDropUp(e.target.value)}
+            />
+            <Grid container spacing={2}>
+              <Grid item>
+                <TextField
+                  sx={{ marginBottom: "1.5rem" }}
+                  fullWidth
+                  required
+                  type="number"
+                  label="No of People"
+                  onChange={(e) => setNoOfPeople(e.target.value)}
+                />
+              </Grid>
+              <Grid sm={5.7} item>
+                <TextField
+                  sx={{ marginBottom: "1.5rem" }}
+                  fullWidth
+                  required
+                  type="date"
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+
+            {empty && (
+              <Typography paddingTop={1} align={"center"} sx={{ color: "red" }}>
+                Please enter a value
+              </Typography>
+            )}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                // marginTop: "1rem",
+              }}
+            >
+              <Button
+                disabled={isSubmitting}
+                sx={{ width: "6rem" }}
+                onClick={handleClick}
+                variant="contained"
+              >
+                {isSubmitting ? "Sending" : "Send"}
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
+      </div>
+    </>
+  );
 }
